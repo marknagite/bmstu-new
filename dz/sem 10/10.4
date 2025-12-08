@@ -1,0 +1,155 @@
+#include <iostream>                      
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <chrono>
+#include <functional>
+
+using namespace std;
+using namespace std::chrono;
+
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+void insertionSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+void merge(vector<int>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    vector<int> leftArr(n1), rightArr(n2);
+
+    for (int i = 0; i < n1; i++)
+        leftArr[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        rightArr[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2) {
+        if (leftArr[i] <= rightArr[j]) {
+            arr[k] = leftArr[i];
+            i++;
+        }
+        else {
+            arr[k] = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = leftArr[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = rightArr[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSortHelper(vector<int>& arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSortHelper(arr, left, mid);
+        mergeSortHelper(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
+void mergeSort(vector<int>& arr) {
+    mergeSortHelper(arr, 0, arr.size() - 1);
+}
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSortHelper(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSortHelper(arr, low, pi - 1);
+        quickSortHelper(arr, pi + 1, high);
+    }
+}
+
+void quickSort(vector<int>& arr) {
+    quickSortHelper(arr, 0, arr.size() - 1);
+}
+
+vector<int> generateRandomArray(int size) {
+    vector<int> arr(size);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1, 10000);
+
+    for (int i = 0; i < size; i++) {
+        arr[i] = dis(gen);
+    }
+    return arr;
+}
+
+void testSortAlgorithm(const string& name, function<void(vector<int>&)> sortFunc, vector<int> arr) {
+    auto start = high_resolution_clock::now();
+
+    sortFunc(arr);
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - start);
+
+    cout << name << ": " << duration.count() << " миллисекунд" << endl;
+}
+
+int main() {
+    const int ARRAY_SIZE = 10000;
+    cout << "Сравнение времени работы алгоритмов сортировки\n";
+    cout << "Размер массива: " << ARRAY_SIZE << " элементов\n\n";
+
+    vector<int> originalArray = generateRandomArray(ARRAY_SIZE);
+
+    testSortAlgorithm("Пузырьковая сортировка", bubbleSort, originalArray);
+    testSortAlgorithm("Сортировка вставками", insertionSort, originalArray);
+    testSortAlgorithm("Сортировка слиянием", mergeSort, originalArray);
+    testSortAlgorithm("Быстрая сортировка", quickSort, originalArray);
+
+    vector<int> stdSortArray = originalArray;
+    auto start = high_resolution_clock::now();
+    sort(stdSortArray.begin(), stdSortArray.end());
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - start);
+    cout << "std::sort: " << duration.count() << " миллисекунд" << endl;
+
+    return 0;
+}
