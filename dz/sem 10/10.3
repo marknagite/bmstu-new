@@ -1,0 +1,38 @@
+#include <iostream>                
+#include <chrono>
+
+using namespace std;
+
+int main() {
+    long long total_seconds;
+
+    cout << "Введите количество секунд: ";
+    cin >> total_seconds;
+
+    auto hours_duration = chrono::duration_cast<chrono::hours>(chrono::seconds(total_seconds));
+    int hours = hours_duration.count();
+    int remaining_seconds = total_seconds - hours * 3600;
+
+    auto minutes_duration = chrono::duration_cast<chrono::minutes>(chrono::seconds(remaining_seconds));
+    int minutes = minutes_duration.count();
+    int seconds = remaining_seconds - minutes * 60;
+
+    cout << hours;
+    if (hours == 1) cout << " час ";
+    else if (hours == 2 || hours == 3 || hours == 4) cout << " часа ";
+    else cout << " часов ";
+
+    cout << minutes;
+    if (minutes == 1) cout << " минута ";
+    else if (minutes == 2 || minutes == 3 || minutes == 4) cout << " минуты ";
+    else cout << " минут ";
+
+    cout << seconds;
+    if (seconds == 1) cout << " секунда";
+    else if (seconds == 2 || seconds == 3 || seconds == 4) cout << " секунды";
+    else cout << " секунд";
+
+    cout << endl;
+
+    return 0;
+}
