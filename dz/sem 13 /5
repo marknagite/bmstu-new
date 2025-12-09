@@ -1,42 +1,42 @@
-//#include <iostream>                  
-//#include <string>
-//#include <locale>
-//
-//using namespace std;
-//
-//class Publication {
-//protected:
-//    string title;
-//
-//public:
-//    Publication(string t) {
-//        title = t;
-//    }
-//};
-//
-//class Book : public Publication {
-//private:
-//    string author;
-//    int year;
-//
-//public:
-//    Book(string t, string a, int y) : Publication(t) {
-//        author = a;
-//        year = y;
-//    }
-//
-//    void displayInfo() {
-//        cout << "Название: " << title << ", Автор: " << author << ", Год выпуска: " << year << endl;
-//    }
-//};
-//
-//int main() {
-//    setlocale(LC_ALL, "RU");
-//
-//    Book myBook("Преступление и наказание", "Фёдор Достоевский", 1866);
-//
-//    cout << "=== Информация о книге ===\n";
-//    myBook.displayInfo();
-//
-//    return 0;
-//}
+#include <iostream>                  //Задача 5
+#include <string>
+#include <locale>
+
+using namespace std;
+
+class Publication {
+protected:
+    string title;
+
+public:
+    Publication(string t) {
+        title = t;
+    }
+};
+
+class Book : public Publication {
+private:
+    string author;
+    int year;
+
+public:
+    Book(string t, string a, int y) : Publication(t) {
+        author = a;
+        year = y;
+    }
+
+    void displayInfo() {
+        cout << "Название: " << title << ", Автор: " << author << ", Год выпуска: " << year << endl;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "RU");
+
+    Book myBook("Преступление и наказание", "Фёдор Достоевский", 1866);
+
+    cout << "=== Информация о книге ===\n";
+    myBook.displayInfo();
+
+    return 0;
+}
