@@ -1,46 +1,44 @@
-﻿#include <iostream>
+#include <iostream>                 
+#include <locale>
+
 using namespace std;
 
-union Variant {
-    int intValue;
-    double doubleValue;
-    char charValue;
+class Rectangle {
+private:
+    double length;
+    double width;
+
+public:
+    Rectangle(double l, double w) {
+        length = l;
+        width = w;
+    }
+
+    double calculateArea() {
+        return length * width;
+    }
+
+    double calculatePerimeter() {
+        return 2 * (length + width);
+    }
+
+    void displayInfo() {
+        cout << "Длина: " << length << ", Ширина: " << width;
+        cout << ", Площадь: " << calculateArea() << ", Периметр: " << calculatePerimeter() << endl;
+    }
 };
 
-int main(){
+int main() {
     setlocale(LC_ALL, "RU");
-    Variant data;
-    char choice;
 
-    cout << "Выберите тип данных:\n";
-    cout << "i - целое число\n";
-    cout << "d - число с плавающей запятой\n";
-    cout << "с - символ\n";
-    cout << "Ваш выбор:\n";
-    cin >> choice;
+    Rectangle rect(8.5, 4.2);
 
-    switch (choice) {
-    case 'i':
-        cout << "Введите целое число: ";
-        cin >> data.intValue;
-        cout << "Вы ввели: " << data.intValue << endl;
-        break;
+    cout << "=== Информация о прямоугольнике ===\n";
+    rect.displayInfo();
 
-    case 'd':
-        cout << "Введите число с плавающей запятой: ";
-        cin >> data.doubleValue;
-        cout << "Вы ввели: " << data.doubleValue << endl;
-        break;
-
-    case 'c':
-        cout << "Введите символ: ";
-        cin >> data.charValue;
-        cout << "Вы ввели: " << data.charValue << endl;
-        break;
-
-    default:
-        cout << "Неверный выбор!" << endl;
-    }
+    cout << "\n=== Создание второго прямоугольника ===\n";
+    Rectangle rect2(12.0, 6.5);
+    rect2.displayInfo();
 
     return 0;
 }
