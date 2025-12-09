@@ -1,0 +1,55 @@
+#include <iostream>               
+#include <locale>
+
+using namespace std;
+
+class Rectangle {
+private:
+    double length;
+    double width;
+
+public:
+    void setLength(double newLength) {
+        length = newLength;
+    }
+
+    void setWidth(double newWidth) {
+        width = newWidth;
+    }
+
+    double calculateArea() {
+        return length * width;
+    }
+
+    double calculatePerimeter() {
+        return 2 * (length + width);
+    }
+
+    void displayInfo() {
+        double area = calculateArea();
+        double perimeter = calculatePerimeter();
+
+        cout << "Длина: " << length << ", Ширина: " << width;
+        cout << ", Площадь: " << area << ", Периметр: " << perimeter << endl;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "RU");
+
+    Rectangle rect;
+
+    rect.setLength(5.5);
+    rect.setWidth(3.2);
+
+    cout << "=== Информация о прямоугольнике ===\n";
+    rect.displayInfo();
+
+    cout << "\n=== Создание второго прямоугольника ===\n";
+    Rectangle rect2;
+    rect2.setLength(10);
+    rect2.setWidth(4);
+    rect2.displayInfo();
+
+    return 0;
+}
