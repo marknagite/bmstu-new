@@ -1,0 +1,249 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Базовый класс BankAccount
+class BankAccount {
+protected:
+    string accountNumber; // Номер счета
+    string ownerName;     // Имя владельца
+    double balance;       // Баланс
+
+public:
+    // Конструктор
+    BankAccount(string accNum, string name, double initialBalance)
+        : accountNumber(accNum), ownerName(name), balance(initialBalance) {}
+
+    // Метод для пополнения счета
+    virtual void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            cout << "Успешно пополнено: " << amount << " руб." << endl;
+            cout << "Новый баланс: " << balance << " руб." << endl;
+        } else {
+            cout << "Ошибка: сумма пополнения должна быть положительной!" << endl;
+        }
+    }
+
+    // Метод для снятия средств
+    virtual void withdraw(double amount) {
+        if (amount > 0) {
+            if (amount <= balance) {
+                balance -= amount;
+                cout << "Успешно снято: " << amount << " руб." << endl;
+                cout << "Новый баланс: " << balance << " руб." << endl;
+            } else {
+                cout << "Ошибка: недостаточно средств на счете!" << endl;
+            }
+        } else {
+            cout << "Ошибка: сумма снятия должна быть положительной!" << endl;
+        }
+    }
+
+    // Метод для вывода информации о счете
+    virtual void displayInfo() const {
+        cout << "\n=== Информация о банковском счете ===" << endl;
+        cout << "Номер счета: " << accountNumber << endl;
+        cout << "Владелец: " << ownerName << endl;
+        cout << "Баланс: " << fixed << setprecision(2) << balance << " руб." << endl;
+    }
+
+    // Геттеры
+    string getAccountNumber() const { return accountNumber; }
+    string getOwnerName() const { return ownerName; }
+    double getBalance() const { return balance; }
+};
+
+// Производный класс SavingsAccount
+class SavingsAccount : public BankAccount {
+private:
+    double interestRate; // Процентная ставка
+
+public:
+    // Конструктор
+    SavingsAccount(string accNum, string name, double initialBalance, double rate)
+        : BankAccount(accNum, name, initialBalance), interestRate(rate) {}
+
+    // Метод для начисления процентов
+    void addInterest() {
+        double interest = balance * interestRate / 100;
+        balance += interest;
+        cout << "Начислены проценты: " << fixed << setprecision(2) 
+             << interest << " руб." << endl;
+        cout << "Новый баланс: " << balance << " руб." << endl;
+    }
+
+    // Переопределенный метод для вывода информации
+    void displayInfo() const override {
+        cout << "\n=== Информация о сберегательном счете ===" << endl;
+        cout << "Номер счета: " << accountNumber << endl;
+        cout << "Владелец: " << ownerName << endl;
+        cout << "Баланс: " << fixed << setprecision(2) << balance << " руб." << endl;
+        cout << "Процентная ставка: " << interestRate << "%" << endl;
+    }
+
+    // Геттер для процентной ставки
+    double getInterestRate() const { return interestRate; }
+};
+
+int main() {
+    cout << "=== БАНКОВСКАЯ СИСТЕМА ===" << endl;
+
+    // Создание обычного банковского счета
+    cout << "\n1. Создание обычного банковского счета:" << endl;
+    BankAccount regularAcc("123456789", "Иван Иванов", 1000.0);
+    regularAcc.displayInfo();
+
+    // Операции с обычным счетом
+    cout << "\n2. Операции с обычным счетом:" << endl;
+    regularAcc.deposit(500.0);
+    regularAcc.withdraw(200.0);
+    regularAcc.withdraw(2000.0); // Попытка снять больше, чем есть на счете
+
+    // Создание сберегательного счета
+    cout << "\n3. Создание сберегательного счета:" << endl;
+    SavingsAccount savingsAcc("987654321", "Петр Петров", 5000.0, 5.0);
+    savingsAcc.displayInfo();
+
+    // Операции со сберегательным счетом
+    cout << "\n4. Операции со сберегательным счетом:" << endl;
+    savingsAcc.deposit(1000.0);
+    savingsAcc.withdraw(500.0);
+    
+    // Начисление процентов
+    cout << "\n5. Начисление процентов:" << endl;
+    savingsAcc.addInterest();
+    
+    // Вывод конечной информации
+    cout << "\n6. Итоговая информация по счетам:" << endl;
+    regularAcc.displayInfo();
+    savingsAcc.displayInfo();
+
+    return 0;
+}#include <iostream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Базовый класс BankAccount
+class BankAccount {
+protected:
+    string accountNumber; // Номер счета
+    string ownerName;     // Имя владельца
+    double balance;       // Баланс
+
+public:
+    // Конструктор
+    BankAccount(string accNum, string name, double initialBalance)
+        : accountNumber(accNum), ownerName(name), balance(initialBalance) {}
+
+    // Метод для пополнения счета
+    virtual void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            cout << "Успешно пополнено: " << amount << " руб." << endl;
+            cout << "Новый баланс: " << balance << " руб." << endl;
+        } else {
+            cout << "Ошибка: сумма пополнения должна быть положительной!" << endl;
+        }
+    }
+
+    // Метод для снятия средств
+    virtual void withdraw(double amount) {
+        if (amount > 0) {
+            if (amount <= balance) {
+                balance -= amount;
+                cout << "Успешно снято: " << amount << " руб." << endl;
+                cout << "Новый баланс: " << balance << " руб." << endl;
+            } else {
+                cout << "Ошибка: недостаточно средств на счете!" << endl;
+            }
+        } else {
+            cout << "Ошибка: сумма снятия должна быть положительной!" << endl;
+        }
+    }
+
+    // Метод для вывода информации о счете
+    virtual void displayInfo() const {
+        cout << "\n=== Информация о банковском счете ===" << endl;
+        cout << "Номер счета: " << accountNumber << endl;
+        cout << "Владелец: " << ownerName << endl;
+        cout << "Баланс: " << fixed << setprecision(2) << balance << " руб." << endl;
+    }
+
+    // Геттеры
+    string getAccountNumber() const { return accountNumber; }
+    string getOwnerName() const { return ownerName; }
+    double getBalance() const { return balance; }
+};
+
+// Производный класс SavingsAccount
+class SavingsAccount : public BankAccount {
+private:
+    double interestRate; // Процентная ставка
+
+public:
+    // Конструктор
+    SavingsAccount(string accNum, string name, double initialBalance, double rate)
+        : BankAccount(accNum, name, initialBalance), interestRate(rate) {}
+
+    // Метод для начисления процентов
+    void addInterest() {
+        double interest = balance * interestRate / 100;
+        balance += interest;
+        cout << "Начислены проценты: " << fixed << setprecision(2) 
+             << interest << " руб." << endl;
+        cout << "Новый баланс: " << balance << " руб." << endl;
+    }
+
+    // Переопределенный метод для вывода информации
+    void displayInfo() const override {
+        cout << "\n=== Информация о сберегательном счете ===" << endl;
+        cout << "Номер счета: " << accountNumber << endl;
+        cout << "Владелец: " << ownerName << endl;
+        cout << "Баланс: " << fixed << setprecision(2) << balance << " руб." << endl;
+        cout << "Процентная ставка: " << interestRate << "%" << endl;
+    }
+
+    // Геттер для процентной ставки
+    double getInterestRate() const { return interestRate; }
+};
+
+int main() {
+    cout << "=== БАНКОВСКАЯ СИСТЕМА ===" << endl;
+
+    // Создание обычного банковского счета
+    cout << "\n1. Создание обычного банковского счета:" << endl;
+    BankAccount regularAcc("123456789", "Иван Иванов", 1000.0);
+    regularAcc.displayInfo();
+
+    // Операции с обычным счетом
+    cout << "\n2. Операции с обычным счетом:" << endl;
+    regularAcc.deposit(500.0);
+    regularAcc.withdraw(200.0);
+    regularAcc.withdraw(2000.0); // Попытка снять больше, чем есть на счете
+
+    // Создание сберегательного счета
+    cout << "\n3. Создание сберегательного счета:" << endl;
+    SavingsAccount savingsAcc("987654321", "Петр Петров", 5000.0, 5.0);
+    savingsAcc.displayInfo();
+
+    // Операции со сберегательным счетом
+    cout << "\n4. Операции со сберегательным счетом:" << endl;
+    savingsAcc.deposit(1000.0);
+    savingsAcc.withdraw(500.0);
+    
+    // Начисление процентов
+    cout << "\n5. Начисление процентов:" << endl;
+    savingsAcc.addInterest();
+    
+    // Вывод конечной информации
+    cout << "\n6. Итоговая информация по счетам:" << endl;
+    regularAcc.displayInfo();
+    savingsAcc.displayInfo();
+
+    return 0;
+}
